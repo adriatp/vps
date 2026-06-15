@@ -1,0 +1,10 @@
+example_app.com {
+  reverse_proxy example_app:3000 {
+    header_up X-Forwarded-Proto https
+    header_up X-Forwarded-Host {host}
+  }
+}
+
+www.example_app.com {
+  redir https://example_app.com{uri} permanent
+}
