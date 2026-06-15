@@ -1,6 +1,6 @@
 # VPS
 
-## DigitalOcean
+## Inicialitzar servei a producció
 
 1. Crear el droplet amb docker des de la pagina web amb clau ssh pública
 
@@ -27,4 +27,11 @@ chmod 600 /home/deploy/.ssh/authorized_keys
 sudo mkdir -p /opt/stack
 sudo chown -R deploy:deploy /opt/stack
 sudo -R 755 /opt/stack
+```
+
+6. Clonar repositori i inicialitzar servei
+
+```bash
+git clone https://github.com/adriatp/vps.git
+./scripts/init.sh
 ```
