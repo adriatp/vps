@@ -12,8 +12,8 @@ IMAGE=$(docker inspect -f '{{.Config.Image}}' "$SERVICE" 2>/dev/null || true)
 
 docker rm -f "$SERVICE" 2>/dev/null || true
 
-if [ -n "$IMAGE" ]; then
-  docker rmi -f "$IMAGE" 2>/dev/null || true
-fi
+# if [ -n "$IMAGE" ]; then
+#   docker rmi -f "$IMAGE" 2>/dev/null || true
+# fi
 
 echo "Removed $SERVICE"
