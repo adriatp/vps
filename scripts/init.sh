@@ -16,17 +16,17 @@ if [ ! -d "$TEMPLATES_DIR" ]; then
   exit 1
 fi
 
+mkdir -p "$TARGET_DIR"
+
+echo "Cleaning $TARGET_DIR (keeping .env)"
+find "$TARGET_DIR" -mindepth 1 ! -name '.env' -exec rm -rf {} +
+
 echo "Initializing service: $SERVICE_NAME"
 
 shopt -s dotglob nullglob
 for template in "$TEMPLATES_DIR"/*; do
   filename="$(basename "$template")"
   target="$TARGET_DIR/$filename"
-
-  if [ -f "$target" ]; then
-    echo "Skipping $filename (already exists)"
-    continue
-  fi
 
   sed "s/example_app/$SERVICE_NAME/g" "$template" >"$target"
   echo "Created $filename"
