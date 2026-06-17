@@ -28,6 +28,11 @@ for template in "$TEMPLATES_DIR"/*; do
   filename="$(basename "$template")"
   target="$TARGET_DIR/$filename"
 
+  if [ "$filename" = ".env" ] && [ -f "$target" ]; then
+    echo "Keeping existing .env"
+    continue
+  fi
+
   sed "s/example_app/$SERVICE_NAME/g" "$template" >"$target"
   echo "Created $filename"
 done
