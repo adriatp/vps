@@ -9,7 +9,7 @@ fi
 SERVICE_NAME="$1"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 TEMPLATES_DIR="$SCRIPT_DIR/../templates"
-TARGET_DIR="$(pwd)/out"
+TARGET_DIR="$(pwd)/out/$SERVICE_NAME"
 
 if [ ! -d "$TEMPLATES_DIR" ]; then
   echo "Error: templates directory not found at $TEMPLATES_DIR"

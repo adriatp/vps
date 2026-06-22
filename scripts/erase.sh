@@ -7,13 +7,14 @@ if [ $# -ne 1 ]; then
 fi
 
 SERVICE="$1"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SERVICE_DIR="$SCRIPT_DIR/../out/$SERVICE"
 
-IMAGE=$(docker inspect -f '{{.Config.Image}}' "$SERVICE" 2>/dev/null || true)
-
-docker rm -f "$SERVICE" 2>/dev/null || true
-
-# if [ -n "$IMAGE" ]; then
-#   docker rmi -f "$IMAGE" 2>/dev/null || true
-# fi
-
-echo "Removed $SERVICE"
+if [ -f "$SERVICE_DIR/docker-compose.yml" ]; then
+  (cd "$SERVICE_DIR" && docker compose down 2>/dev/null) || true
+  rm -rf "$SERVICE_DIR"
+  echo "Removed $SERVICE (compose stack + files)"
+else
+  docker rm -f "$SERVICE" 2>/dev/null || true
+  echo "Removed $SERVICE"
+fi
