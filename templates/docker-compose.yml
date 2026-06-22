@@ -28,6 +28,7 @@ services:
     environment:
       RAILS_ENV: production
       DB_HOSTNAME: mariadb
+      DB_USERNAME: root
       DB_DATABASE: example_app
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
     depends_on:
