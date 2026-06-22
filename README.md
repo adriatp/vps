@@ -33,5 +33,7 @@ sudo -R 755 /opt/stack
 
 ```bash
 git clone https://github.com/adriatp/vps.git
-./scripts/init.sh
+./scripts/init.sh <service_name>
+# set env vars in `out/<service_name>/.env` and `out/<service_name>/<service_name>.env`
+./scripts/run.sh <service_name>
 ```
