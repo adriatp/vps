@@ -18,23 +18,29 @@ fi
 
 mkdir -p "$TARGET_DIR"
 
-echo "Cleaning $TARGET_DIR (keeping .env)"
-find "$TARGET_DIR" -mindepth 1 ! -name '.env' -exec rm -rf {} +
+echo "Cleaning $TARGET_DIR (keeping .env and ${SERVICE_NAME}.env)"
+find "$TARGET_DIR" -mindepth 1 ! -name '.env' ! -name "${SERVICE_NAME}.env" -exec rm -rf {} +
 
 echo "Initializing service: $SERVICE_NAME"
 
 shopt -s dotglob nullglob
 for template in "$TEMPLATES_DIR"/*; do
   filename="$(basename "$template")"
-  target="$TARGET_DIR/$filename"
 
-  if [ "$filename" = ".env" ] && [ -f "$target" ]; then
-    echo "Keeping existing .env"
+  if [ "$filename" = "example_app.env" ]; then
+    target="$TARGET_DIR/${SERVICE_NAME}.env"
+  else
+    target="$TARGET_DIR/$filename"
+  fi
+
+  # Preserve existing .env and <service_name>.env
+  if { [ "$filename" = ".env" ] || [ "$filename" = "example_app.env" ]; } && [ -f "$target" ]; then
+    echo "Keeping existing $(basename "$target")"
     continue
   fi
 
   sed "s/example_app/$SERVICE_NAME/g" "$template" >"$target"
-  echo "Created $filename"
+  echo "Created $(basename "$target")"
 done
 
 echo "Done."
