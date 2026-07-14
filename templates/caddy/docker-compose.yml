@@ -10,7 +10,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     networks:
-      - caddy_network
+      - internal_network
     restart: unless-stopped
 
 volumes:
@@ -20,6 +20,5 @@ volumes:
     name: caddy_config
 
 networks:
-  caddy_network:
-    name: caddy_network
-    driver: bridge
+  internal_network:
+    external: true

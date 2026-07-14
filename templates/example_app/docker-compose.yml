@@ -13,12 +13,9 @@ services:
     expose:
       - '${APP_PORT}'
     networks:
-      - mariadb_network
-      - caddy_network
+      - internal_network
     restart: unless-stopped
 
 networks:
-  mariadb_network:
-    external: true
-  caddy_network:
+  internal_network:
     external: true

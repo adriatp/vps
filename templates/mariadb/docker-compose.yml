@@ -7,7 +7,7 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
-      - mariadb_network
+      - internal_network
     restart: unless-stopped
 
 volumes:
@@ -15,6 +15,5 @@ volumes:
     name: mariadb_data
 
 networks:
-  mariadb_network:
-    name: mariadb_network
-    driver: bridge
+  internal_network:
+    external: true
