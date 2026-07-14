@@ -9,6 +9,11 @@ if [ ! -d "$OUT_DIR" ]; then
   exit 1
 fi
 
+if ! docker network inspect internal_network >/dev/null 2>&1; then
+  echo "Creating network internal_network..."
+  docker network create internal_network
+fi
+
 # Stop all services
 for dir in "$OUT_DIR"/*; do
   [ -d "$dir" ] || continue
