@@ -2,13 +2,11 @@
 set -euo pipefail
 
 if [ $# -lt 1 ]; then
-  echo "Usage: $0 <service_name|domain> [port]"
-  echo "  If the first arg contains a '.', it is treated as a domain and"
-  echo "  the service name is extracted from it (left of the first dot)."
+  echo "Usage: $0 <service_name|domain>"
   exit 1
 fi
 
-APP_PORT="${2:-3000}"
+APP_PORT=3000
 if [[ "$1" == *.* ]]; then
   DOMAIN="$1"
   SERVICE_NAME="${1%%.*}"

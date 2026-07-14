@@ -6,8 +6,6 @@ services:
       - .env
     environment:
       RAILS_ENV: production
-    ports:
-      - '${APP_PORT}:3000'
     networks:
       - internal_network
     restart: unless-stopped
