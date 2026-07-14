@@ -60,6 +60,11 @@ else
   echo "MariaDB infrastructure already exists, skipping."
 fi
 
+# ── Bring up infrastructure (creates networks with proper labels) ─
+echo "Ensuring infrastructure is up..."
+(cd "$CADDY_DIR" && docker compose up -d 2>/dev/null || true)
+(cd "$MARIADB_DIR" && docker compose up -d 2>/dev/null || true)
+
 # Initialize the app service
 mkdir -p "$TARGET_DIR"
 
