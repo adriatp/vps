@@ -84,7 +84,8 @@ for template in "$TEMPLATES_DIR/example_app"/*; do
 
   sed "s/example_app/$SERVICE_NAME/g" "$template" |
     sed "s/^APP_PORT=.*/APP_PORT=$APP_PORT/" |
-    sed "s/^MARIADB_ROOT_PASSWORD=.*/$(grep '^MARIADB_ROOT_PASSWORD=' "$MARIADB_DIR/.env")/" |
+    sed "s/^DB_PASSWORD=.*/DB_PASSWORD=$(grep '^MARIADB_ROOT_PASSWORD=' "$MARIADB_DIR/.env" | cut -d'=' -f2)/" |
+    sed "s/^DB_DATABASE=.*/DB_DATABASE=$SERVICE_NAME/" |
     sed "s/^SECRET_KEY_BASE=.*/SECRET_KEY_BASE=$SECRET_KEY_BASE/" |
     sed "s/^APP_HOST=.*/APP_HOST=$DOMAIN/" |
     sed "s/^FROM_USER=.*/FROM_USER=no-reply/" >"$target"
