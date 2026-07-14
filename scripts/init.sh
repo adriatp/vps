@@ -19,7 +19,7 @@ if [ ! -d "$TEMPLATES_DIR" ]; then
   exit 1
 fi
 
-# ── Ensure caddy infrastructure ──────────────────────────────────
+# Ensure caddy infrastructure
 CADDY_DIR="$OUT_DIR/caddy"
 if [ ! -d "$CADDY_DIR" ]; then
   echo "Initializing caddy infrastructure..."
@@ -36,7 +36,7 @@ else
   echo "Caddy infrastructure already exists, skipping."
 fi
 
-# ── Ensure mariadb infrastructure ────────────────────────────────
+# Ensure mariadb infrastructure
 MARIADB_DIR="$OUT_DIR/mariadb"
 if [ ! -d "$MARIADB_DIR" ]; then
   echo "Initializing mariadb infrastructure..."
@@ -53,7 +53,7 @@ else
   echo "MariaDB infrastructure already exists, skipping."
 fi
 
-# ── Initialize the app service ───────────────────────────────────
+# Initialize the app service
 mkdir -p "$TARGET_DIR"
 
 echo "Cleaning $TARGET_DIR (keeping .env)"
@@ -73,13 +73,13 @@ for template in "$TEMPLATES_DIR/example_app"/*; do
     continue
   fi
 
-  sed "s/example_app/$SERVICE_NAME/g" "$template" \
-    | sed "s/^APP_PORT=.*/APP_PORT=$APP_PORT/" \
-    | sed "s/^MARIADB_ROOT_PASSWORD=.*/$(grep '^MARIADB_ROOT_PASSWORD=' "$MARIADB_DIR/.env")/" >"$target"
+  sed "s/example_app/$SERVICE_NAME/g" "$template" |
+    sed "s/^APP_PORT=.*/APP_PORT=$APP_PORT/" |
+    sed "s/^MARIADB_ROOT_PASSWORD=.*/$(grep '^MARIADB_ROOT_PASSWORD=' "$MARIADB_DIR/.env")/" >"$target"
   echo "Created $(basename "$target")"
 done
 
-# ── Append Caddy block ───────────────────────────────────────────
+# Append Caddy block
 CADDYFILE="$CADDY_DIR/Caddyfile"
 
 if grep -q "# $SERVICE_NAME$" "$CADDYFILE" 2>/dev/null; then
