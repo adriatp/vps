@@ -10,8 +10,6 @@ services:
       DB_DATABASE: example_app
       DB_USERNAME: root
       DB_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-    depends_on:
-      - mariadb
     expose:
       - '${APP_PORT}'
     networks:
