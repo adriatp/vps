@@ -6,7 +6,7 @@ if [ $# -lt 1 ]; then
   exit 1
 fi
 
-APP_PORT=3000
+APP_PORT=80
 if [[ "$1" == *.* ]]; then
   DOMAIN="$1"
   SERVICE_NAME="${1%%.*}"
