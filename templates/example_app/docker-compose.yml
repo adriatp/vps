@@ -6,12 +6,8 @@ services:
       - .env
     environment:
       RAILS_ENV: production
-      DB_HOSTNAME: mariadb
-      DB_DATABASE: example_app
-      DB_USERNAME: root
-      DB_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-    expose:
-      - '${APP_PORT}'
+    ports:
+      - '${APP_PORT}:3000'
     networks:
       - internal_network
     restart: unless-stopped
