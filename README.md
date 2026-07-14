@@ -1,6 +1,6 @@
 # VPS
 
-## Inicialitzar servei a producció
+## Init production services
 
 1. Crear el droplet amb docker des de la pagina web amb clau ssh pública
 
@@ -34,6 +34,21 @@ sudo -R 755 /opt/stack
 ```bash
 git clone https://github.com/adriatp/vps.git
 ./scripts/init.sh <service_name>
-# set env vars in `out/<service_name>/.env` and `out/<service_name>/<service_name>.env`
+# set env vars in 'out/<service_name>/.env' and 'out/<service_name>/<service_name>.env'
 ./scripts/run.sh <service_name>
+```
+
+## DB
+
+### Export db
+
+```bash
+docker exec mariadb sh -c 'mariadb-dump -u root -p"$MARIADB_ROOT_PASSWORD" chessdle' > "$(date +%Y%m%d%H%M%S).sql"
+```
+
+### Import db
+
+```bash
+# docker exec mariadb sh -c 'mariadb -u root -p"$MARIADB_ROOT_PASSWORD" -e "CREATE DATABASE chessdle;"'
+docker exec -i mariadb sh -c 'mariadb -u root -p"$MARIADB_ROOT_PASSWORD" chessdle' < 20260714153045.sql
 ```
