@@ -24,6 +24,12 @@ if [ ! -d "$TEMPLATES_DIR" ]; then
   exit 1
 fi
 
+# Ensure docker network
+if ! docker network inspect internal_network >/dev/null 2>&1; then
+  echo "Creating network internal_network..."
+  docker network create internal_network
+fi
+
 # Ensure caddy infrastructure
 CADDY_DIR="$OUT_DIR/caddy"
 if [ ! -d "$CADDY_DIR" ]; then
