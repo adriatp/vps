@@ -13,15 +13,77 @@
 ```bash
 adduser deploy
 usermod -aG sudo deploy
-usermod -aG docker deploy
-mkdir -p /home/deploy/.ssh
-cp /root/.ssh/authorized_keys /home/deploy/.ssh/
-chown -R deploy:deploy /home/deploy/.ssh
-chmod 700 /home/deploy/.ssh
-chmod 600 /home/deploy/.ssh/authorized_keys
+su deploy
+cd ~
+mkdir -p .ssh
+touch .ssh/authorized_keys
+chmod 700 .ssh
+chmod 600 .ssh/authorized_keys
+# posar clave a authorized_keys
 ```
 
-5. Crear carpeta per stack
+5. Instalar docker
+
+```bash
+# Update system
+sudo apt update
+sudo apt upgrade -y
+
+# Add dependencies
+sudo apt install -y ca-certificates curl gnupg
+
+# Add gpgp docker key
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | \
+sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add official repo
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Install docker and docker compose
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Check installation
+docker --version
+docker compose version
+
+# Execute docker without sudo
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+6. Add programs to increase security
+
+```bash
+sudo apt install fail2ban
+sudo systemctl enable --now fail2ban
+sudo apt install unattended-upgrades
+sudo dpkg-reconfigure unattended-upgrades
+```
+
+8. Limit docker logs size
+
+```bash
+sudo tee /etc/docker/daemon.json > /dev/null <<'EOF'
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  }
+}
+EOF
+
+sudo systemctl restart docker
+```
+
+9. Crear carpeta per stack
 
 ```bash
 sudo mkdir -p /opt/stack
@@ -29,7 +91,7 @@ sudo chown -R deploy:deploy /opt/stack
 sudo -R 755 /opt/stack
 ```
 
-6. Clonar repositori i inicialitzar servei
+10. Clonar repositori i inicialitzar servei
 
 ```bash
 git clone https://github.com/adriatp/vps.git
